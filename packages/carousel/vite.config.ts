@@ -40,7 +40,7 @@ export default defineConfig({
         },
       },
     },
-    sourcemap: false,
+    sourcemap: process.env.NODE_ENV === 'development',
     cssCodeSplit: false, // CSS를 하나의 파일로 추출
   },
 });
