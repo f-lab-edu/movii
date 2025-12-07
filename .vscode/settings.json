@@ -46,6 +46,7 @@
     "Pretendard",
     "radash",
     "rollup",
+    "rsbuild",
     "rsdoctor",
     "rspack",
     "svgs",
@@ -57,8 +58,8 @@
   "tailwindCSS.classAttributes": [".*[cC]lass.*"],
   "workbench.iconTheme": "material-icon-theme",
   "material-icon-theme.files.associations": {
-    "rspack.common.mjs": "Rstack",
-    "rspack.dev.mjs": "Rstack",
-    "rspack.prod.mjs": "Rstack"
+    "rsbuild.common.ts": "Rstack",
+    "rsbuild.dev.ts": "Rstack",
+    "rsbuild.prod.ts": "Rstack"
   }
 }

@@ -11,10 +11,9 @@ const NotFound = lazy(() => import('@/pages/not-found'));
 const People = lazy(() => import('@/pages/people'));
 const Search = lazy(() => import('@/pages/search'));
 
-const TanstackDevtools =
-  process.env.NODE_ENV === 'development'
-    ? lazy(() => import('@/add-ons/tanstack-query-devtools'))
-    : () => null;
+const TanstackDevtools = import.meta.env.DEV
+  ? lazy(() => import('@/add-ons/tanstack-query-devtools'))
+  : () => null;
 
 const router = createBrowserRouter([
   {
