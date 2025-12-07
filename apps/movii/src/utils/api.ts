@@ -11,7 +11,7 @@ declare module 'axios' {
 export const api = axios.create({
   baseURL: 'https://api.themoviedb.org',
   headers: {
-    Authorization: `Bearer ${process.env.TMDB_API_ACCESS_TOKEN}`,
+    Authorization: `Bearer ${process.env.PUBLIC_TMDB_API_ACCESS_TOKEN}`,
   },
   timeout: 20000,
 });
