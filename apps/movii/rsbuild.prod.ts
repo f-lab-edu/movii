@@ -1,4 +1,4 @@
-import { defineConfig, mergeRsbuildConfig } from '@rsbuild/core';
+import { defineConfig, mergeRsbuildConfig, loadEnv } from '@rsbuild/core';
 import { pluginTypeCheck } from '@rsbuild/plugin-type-check';
 import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
 
@@ -25,6 +25,7 @@ const prodConfig = defineConfig({
     lazyCompilation: false,
   },
   source: {
+    define: loadEnv().publicVars,
     // 아래 패키지들은 .browserslistrc에 정의된 브라우저보다 지원 사양이 높으므로 트랜스파일에 추가
     include: [
       /node_modules[\\/]@tanstack[\\/]react-query[\\/]/,
