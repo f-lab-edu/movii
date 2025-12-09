@@ -1,6 +1,6 @@
 import { Carousel, useCarouselState } from 'movii-carousel';
 import { memo, useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { TMDB_API_POSTER_BASE_URL } from '@/constants';
 import { useMoviesInfiniteQuery } from '@/features/movie/hooks/queries/use-movies-infinite-query';

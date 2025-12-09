@@ -8,7 +8,7 @@ import { api } from '@/utils/api';
 
 type MoviesFetcher = (type: MovieFetchType, params: MoviesRequestParams) => Promise<Paging<Movie>>;
 
-const fetchMovies: MoviesFetcher = (type, params) =>
+export const fetchMovies: MoviesFetcher = (type, params) =>
   api.get(`/3/movie/${snake(type)}`, { params }).then((res) => res.data);
 
 export const useMoviesInfiniteQuery = (type: MovieFetchType, params?: MoviesRequestParams) => {

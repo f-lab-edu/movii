@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 import { InView } from 'react-intersection-observer';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import AsyncBoundary from '@/components/async-boundary';
 import PosterCard from '@/components/poster-card';
 import { TMDB_API_POSTER_BASE_URL } from '@/constants';
 import { useSearchInfiniteQuery } from '@/features/search/hooks/queries/use-search-infinite-query';
 import { SearchResultMap } from '@/features/search/types';
-import ResultEmpty from '@/pages/search/components/search-results/result-empty';
+import ResultEmpty from '@/routes/search/components/search-results/result-empty';
 
 type PosterSearchResultsProps = {
   query: Extract<keyof SearchResultMap, 'tv' | 'movie'>;

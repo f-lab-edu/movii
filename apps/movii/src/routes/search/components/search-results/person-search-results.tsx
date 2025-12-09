@@ -1,17 +1,17 @@
 import { useMemo } from 'react';
 import { InView } from 'react-intersection-observer';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router';
 
 import AsyncBoundary from '@/components/async-boundary';
 import Profile from '@/components/profile';
 import { FALLBACK_AVATAR_IMAGE_URL, TMDB_API_POSTER_BASE_URL } from '@/constants';
 import { useSearchInfiniteQuery } from '@/features/search/hooks/queries/use-search-infinite-query';
-import ResultEmpty from '@/pages/search/components/search-results/result-empty';
-import ResultError from '@/pages/search/components/search-results/result-error';
+import ResultEmpty from '@/routes/search/components/search-results/result-empty';
+import ResultError from '@/routes/search/components/search-results/result-error';
 
 const ListContainer = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-x-[10px] gap-y-8 pt-[55px] px-10 pb-8">
+    <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-x-2.5 gap-y-8 pt-[55px] px-10 pb-8">
       {children}
     </ul>
   );
@@ -64,7 +64,7 @@ const Contents = () => {
                   className="shrink-0 size-full aspect-square"
                 />
                 <div className="text-center">
-                  <Profile.Name className="text-white text-[15px] font-(--font-weight-medium)">
+                  <Profile.Name className="text-white text-[15px] font-medium">
                     {result.name}
                   </Profile.Name>
                   {result.knownForDepartment && (

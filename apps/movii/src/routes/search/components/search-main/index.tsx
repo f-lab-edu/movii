@@ -1,5 +1,5 @@
-import GenreSection from '@/pages/search/components/search-main/genre-section';
-import PopularSearchKeywordsSection from '@/pages/search/components/search-main/popular-search-keywords-section';
+import GenreSection from '@/routes/search/components/search-main/genre-section';
+import PopularSearchKeywordsSection from '@/routes/search/components/search-main/popular-search-keywords-section';
 
 const SearchMain = () => {
   return (

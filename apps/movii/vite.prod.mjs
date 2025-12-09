@@ -9,9 +9,6 @@ export function createProdConfig() {
    */
   const prodConfig = {
     mode: 'production',
-    optimizeDeps: {
-      include: ['@tanstack/react-query'],
-    },
     plugins: [],
     build: {
       outDir: 'dist',
@@ -25,7 +22,7 @@ export function createProdConfig() {
         },
       },
       emptyOutDir: true,
-      sourcemap: 'hidden',
+      sourcemap: false,
       cssCodeSplit: true,
       reportCompressedSize: true,
       rollupOptions: {

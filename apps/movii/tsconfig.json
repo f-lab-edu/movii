@@ -2,17 +2,18 @@
   "extends": "@movii/typescript-config",
   "compilerOptions": {
     "composite": true,
+    "rootDirs": [".", "./.react-router/types"],
     "baseUrl": "./src",
     "paths": {
       "@/*": ["./*"],
       "@/assets/*": ["./assets/*"],
       "@/components/*": ["./components/*"],
-      "@/pages/*": ["./pages/*"],
+      "@/routes/*": ["./routes/*"],
       "@/styles/*": ["./styles/*"],
       "@/utils/*": ["./utils/*"],
       "@/features/*": ["./features/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "./.react-router/types"],
   "exclude": ["node_modules", "dist"]
 }

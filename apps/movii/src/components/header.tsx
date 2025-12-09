@@ -4,7 +4,7 @@ import { SearchIcon } from '@movii/icons/search';
 import { debounce } from 'radash';
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 
 type SearchFormData = {
   query: string;

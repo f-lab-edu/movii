@@ -17,6 +17,9 @@ export function createDevConfig() {
       port: 4173,
       strictPort: true,
     },
+    build: {
+      sourcemap: true,
+    },
   };
 
   const merged = mergeConfig(commonConfig, devConfig);

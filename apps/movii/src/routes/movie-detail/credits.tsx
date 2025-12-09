@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router';
 
 import AsyncBoundary from '@/components/async-boundary';
 import Profile from '@/components/profile';

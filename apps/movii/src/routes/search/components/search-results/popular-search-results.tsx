@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { InView } from 'react-intersection-observer';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router';
 
 import posterFallbackImage from '@/assets/images/poster-fallback.svg';
 import AsyncBoundary from '@/components/async-boundary';
@@ -8,9 +8,9 @@ import PosterCard from '@/components/poster-card';
 import Profile from '@/components/profile';
 import { FALLBACK_AVATAR_IMAGE_URL, TMDB_API_POSTER_BASE_URL } from '@/constants';
 import { useMultiSearchInfiniteQuery } from '@/features/search/hooks/queries/use-multi-search-infinite-query';
-import ResultEmpty from '@/pages/search/components/search-results/result-empty';
-import ResultError from '@/pages/search/components/search-results/result-error';
-import ResultLoading from '@/pages/search/components/search-results/result-loading';
+import ResultEmpty from '@/routes/search/components/search-results/result-empty';
+import ResultError from '@/routes/search/components/search-results/result-error';
+import ResultLoading from '@/routes/search/components/search-results/result-loading';
 
 type SearchListItemProps = {
   title: string;

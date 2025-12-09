@@ -6,7 +6,7 @@ import StarIcon from '@movii/icons/star';
 import StarOutlinedIcon from '@movii/icons/star-outlined';
 import TvIcon from '@movii/icons/tv';
 import { memo, ReactNode } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router';
 
 import AsyncBoundary from '@/components/async-boundary';
 import Button from '@/components/button';

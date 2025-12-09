@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router';
 
 import AsyncBoundary from '@/components/async-boundary';
 import PosterCard from '@/components/poster-card';

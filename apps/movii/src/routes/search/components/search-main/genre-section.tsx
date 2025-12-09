@@ -1,7 +1,7 @@
 import { Carousel } from 'movii-carousel';
 import { ComponentProps } from 'react';
 import { FallbackProps } from 'react-error-boundary';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import AsyncBoundary from '@/components/async-boundary';
 import useGenresQuery from '@/features/genre/hooks/quries/use-genres-query';
