@@ -1,12 +1,15 @@
 packages:
-  - 'apps/*'
-  - 'packages/*'
+  - apps/*
+  - packages/*
 
 catalog:
-  react: ^19.1.1
-  react-dom: ^19.1.1
   '@types/react': ^19.1.15
   '@types/react-dom': ^19.1.9
   eslint: ^9.36.0
   prettier: ^3.6.2
+  react: ^19.1.1
+  react-dom: ^19.1.1
   typescript: ^5.9.2
+
+ignoredBuiltDependencies:
+  - '@swc/core'

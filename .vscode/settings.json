@@ -52,13 +52,14 @@
     "swcrc",
     "TMDB",
     "Turborepo",
+    "VITE",
     "watcha"
   ],
   "tailwindCSS.classAttributes": [".*[cC]lass.*"],
   "workbench.iconTheme": "material-icon-theme",
   "material-icon-theme.files.associations": {
-    "rspack.common.mjs": "Rstack",
-    "rspack.dev.mjs": "Rstack",
-    "rspack.prod.mjs": "Rstack"
+    "vite.common.mjs": "vite",
+    "vite.dev.mjs": "vite",
+    "vite.prod.mjs": "vite"
   }
 }

@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 declare module '*.webp';
 declare module '*.png';
 declare module '*.jpg';
@@ -12,3 +14,7 @@ type Paging<T> = {
   total_pages: number;
   total_results: number;
 };
+
+interface ImportMetaEnv {
+  readonly VITE_TMDB_API_ACCESS_TOKEN: string;
+}
