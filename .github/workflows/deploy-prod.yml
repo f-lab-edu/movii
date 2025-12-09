@@ -22,7 +22,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      DIST_PATH: apps/movii/dist
+      DIST_PATH: apps/movii/dist/client
     defaults:
       run:
         shell: bash

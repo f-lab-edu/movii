@@ -7,9 +7,9 @@
   "prettier": "@movii/prettier-config",
   "scripts": {
     "analyze": "cross-env ANALYZE=true vite build --config vite.prod.mjs",
-    "dev": "vite --config vite.dev.mjs",
-    "build": "vite build --config vite.prod.mjs",
-    "build:preview": "pnpm run build && npx serve dist",
+    "dev": "react-router dev --config vite.dev.mjs",
+    "build": "react-router build --config vite.prod.mjs",
+    "build:preview": "pnpm run build && npx serve dist/client",
     "typecheck": "tsc --noEmit",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' '*.mjs'",
     "lint:fix": "eslint 'src/**/*.{js,jsx,ts,tsx}' '*.mjs' --fix",
