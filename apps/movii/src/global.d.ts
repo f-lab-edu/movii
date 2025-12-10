@@ -11,8 +11,8 @@ declare module '*.sass';
 type Paging<T> = {
   page: number;
   results: T[];
-  total_pages: number;
-  total_results: number;
+  totalPages: number;
+  totalResults: number;
 };
 
 interface ImportMetaEnv {

@@ -15,7 +15,7 @@ export const useMultiSearchInfiniteQuery = (params: SearchRequestParams) => {
     queryFn: ({ pageParam = 1 }) => multiSearch({ ...params, page: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
-      lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
+      lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
     staleTime: Infinity,
     gcTime: Infinity,
   });

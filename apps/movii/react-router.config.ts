@@ -5,4 +5,5 @@ export default {
   buildDirectory: 'dist',
   appDirectory: 'src',
   basename: '/',
+  prerender: ['/'],
 } satisfies Config;

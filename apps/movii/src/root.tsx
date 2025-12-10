@@ -1,9 +1,4 @@
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { lazy, ReactNode, Suspense, useState } from 'react';
 import {
   isRouteErrorResponse,
@@ -12,7 +7,6 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
 } from 'react-router';
 import '@/styles/global.css';
 
@@ -41,24 +35,12 @@ export function Layout({ children }: { children: ReactNode }) {
   );
 }
 
-// 서버에서 실행되는 부분: SSR용 prefetch + dehydrate
-export async function loader() {
-  const queryClient = new QueryClient();
-
-  return {
-    dehydratedState: dehydrate(queryClient),
-  };
-}
-
 export default function App() {
   const [queryClient] = useState(() => new QueryClient());
-  const { dehydratedState } = useLoaderData<typeof loader>();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <HydrationBoundary state={dehydratedState}>
-        <Outlet />
-      </HydrationBoundary>
+      <Outlet />
       <Suspense>
         <TanstackDevtools />
       </Suspense>
