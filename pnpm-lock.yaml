@@ -93,6 +93,9 @@ importers:
         specifier: ^3.3.1
         version: 3.3.1
     devDependencies:
+      '@movii/browserslist-config':
+        specifier: workspace:*
+        version: link:../../packages/browserslist-config
       '@movii/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
@@ -160,8 +163,13 @@ importers:
         specifier: ^6.0.5
         version: 6.4.1(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0)(yaml@2.8.1)
 
+  packages/browserslist-config: {}
+
   packages/carousel:
     devDependencies:
+      '@movii/browserslist-config':
+        specifier: workspace:*
+        version: link:../browserslist-config
       '@movii/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config

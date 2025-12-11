@@ -15,6 +15,9 @@
     "lint:fix": "eslint 'src/**/*.{js,jsx,ts,tsx}' '*.mjs' --fix",
     "format": "prettier --write ."
   },
+  "browserslist": [
+    "extends @movii/browserslist-config"
+  ],
   "dependencies": {
     "@movii/icons": "workspace:*",
     "@movii/image": "workspace:*",
@@ -34,6 +37,7 @@
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
+    "@movii/browserslist-config": "workspace:*",
     "@movii/eslint-config": "workspace:*",
     "@movii/prettier-config": "workspace:*",
     "@movii/typescript-config": "workspace:*",

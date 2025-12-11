@@ -1,6 +1,6 @@
 {
   "name": "movii-carousel",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A customizable React carousel component",
   "private": false,
   "type": "module",
@@ -24,6 +24,9 @@
   },
   "files": [
     "dist"
+  ],
+  "browserslist": [
+    "extends @movii/browserslist-config"
   ],
   "scripts": {
     "build": "vite build",
@@ -52,6 +55,7 @@
     "react": "^19.1.1"
   },
   "devDependencies": {
+    "@movii/browserslist-config": "workspace:*",
     "@movii/eslint-config": "workspace:*",
     "@movii/prettier-config": "workspace:*",
     "@movii/typescript-config": "workspace:*",

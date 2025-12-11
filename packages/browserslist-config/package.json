@@ -1,0 +1,9 @@
+{
+  "name": "@movii/browserslist-config",
+  "version": "1.0.0",
+  "description": "Shared Browserslist targets for Movii monorepo",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "main": "index.js"
+}
