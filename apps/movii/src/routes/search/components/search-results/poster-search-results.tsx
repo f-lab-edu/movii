@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { InView } from 'react-intersection-observer';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 import AsyncBoundary from '@/components/async-boundary';
 import PosterCard from '@/components/poster-card';
@@ -14,6 +14,7 @@ type PosterSearchResultsProps = {
 };
 
 const Contents = ({ query }: PosterSearchResultsProps) => {
+  const location = useLocation();
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } = useSearchInfiniteQuery(query, {
     query,
     language: 'ko',

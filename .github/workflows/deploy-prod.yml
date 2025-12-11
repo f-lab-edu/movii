@@ -70,10 +70,14 @@ jobs:
 
       - name: Sync to S3
         run: |
-          echo "📄 Uploading index.html (no-cache)"
-          aws s3 cp ${{ env.DIST_PATH }}/index.html s3://${{ secrets.AWS_S3_PROJECT_BUCKET_NAME }}/index.html \
-            --cache-control "no-cache, no-store, must-revalidate" \
-            --content-type "text/html; charset=utf-8"
+          echo "📄 Uploading all HTML with no-cache"
+          find "${{ env.DIST_PATH }}" -name "*.html" -print0 |
+            while IFS= read -r -d '' file; do
+              relative_path="${file#${{ env.DIST_PATH }}/}"
+              aws s3 cp "$file" "s3://${{ secrets.AWS_S3_PROJECT_BUCKET_NAME }}/$relative_path" \
+                --cache-control "no-cache, no-store, must-revalidate" \
+                --content-type "text/html; charset=utf-8"
+            done
 
           echo "🎨 Uploading CSS files (1 year caching)"
           aws s3 sync ${{ env.DIST_PATH }}/ s3://${{ secrets.AWS_S3_PROJECT_BUCKET_NAME }} \

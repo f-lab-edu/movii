@@ -1,4 +1,4 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 
 import { trendingQueryKeys } from '@/features/trending/hooks/queries/query-keys';
 import { TrendingRequestParams, TrendingResult } from '@/features/trending/types';
@@ -15,11 +15,14 @@ const fetchTrending: TrendingFetcher = ({ mediaType, timeWindow, language }) =>
     })
     .then((res) => res.data);
 
-export const useTrendingQuery = (params: TrendingRequestParams) => {
-  return useSuspenseQuery({
+export const trendingQueryOptions = (params: TrendingRequestParams) =>
+  queryOptions({
     queryKey: trendingQueryKeys.trending(params),
     queryFn: () => fetchTrending(params),
     staleTime: Infinity,
     gcTime: Infinity,
   });
+
+export const useTrendingQuery = (params: TrendingRequestParams) => {
+  return useSuspenseQuery(trendingQueryOptions(params));
 };

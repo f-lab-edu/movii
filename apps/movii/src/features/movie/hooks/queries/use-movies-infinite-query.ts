@@ -1,4 +1,4 @@
-import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { infiniteQueryOptions, useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { snake } from 'radash';
 
 import { movieQueryKeys } from './query-keys';
@@ -11,10 +11,11 @@ type MoviesFetcher = (type: MovieFetchType, params: MoviesRequestParams) => Prom
 const fetchMovies: MoviesFetcher = (type, params) =>
   api.get(`/3/movie/${snake(type)}`, { params }).then((res) => res.data);
 
-export const useMoviesInfiniteQuery = (type: MovieFetchType, params?: MoviesRequestParams) => {
-  const { page, language } = params || { page: 1, language: 'ko' };
+export const moviesInfiniteQueryOptions = (type: MovieFetchType, params?: MoviesRequestParams) => {
+  const page = params?.page ?? 1;
+  const language = params?.language ?? 'en-US';
 
-  return useSuspenseInfiniteQuery({
+  return infiniteQueryOptions({
     queryKey: movieQueryKeys.list(type, { page, language }),
     queryFn: ({ pageParam }) => {
       const resolvedPage = typeof pageParam === 'number' ? pageParam : page;
@@ -26,4 +27,8 @@ export const useMoviesInfiniteQuery = (type: MovieFetchType, params?: MoviesRequ
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   });
+};
+
+export const useMoviesInfiniteQuery = (type: MovieFetchType, params?: MoviesRequestParams) => {
+  return useSuspenseInfiniteQuery(moviesInfiniteQueryOptions(type, params));
 };
