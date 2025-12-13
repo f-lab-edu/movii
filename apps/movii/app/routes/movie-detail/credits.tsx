@@ -49,8 +49,8 @@ const Credits = () => {
 
   return (
     <div className="px-10">
-      <h1 className="text-white text-[28px] font-(--font-weight-bold) mb-3 mt-[54px]">감독/출연</h1>
-      <hr className="h-[1px] bg-(--color-divider) mb-[18px]" />
+      <h1 className="text-white text-[28px] font-bold mb-3 mt-[54px]">감독/출연</h1>
+      <hr className="h-px bg-(--color-divider) mb-[18px]" />
       <AsyncBoundary fallback={<div className="text-white">Error</div>}>
         <CreditsContent id={Number(id)} />
       </AsyncBoundary>

@@ -1,8 +1,7 @@
 import { infiniteQueryOptions, useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { snake } from 'radash';
 
-import { movieQueryKeys } from './query-keys';
-
+import { movieQueryKeys } from '@/features/movie/hooks/queries/query-keys';
 import { Movie, MovieFetchType, MoviesRequestParams } from '@/features/movie/types';
 import { api } from '@/utils/api';
 

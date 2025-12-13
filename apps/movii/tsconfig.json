@@ -3,15 +3,9 @@
   "compilerOptions": {
     "composite": true,
     "rootDirs": [".", "./.react-router/types"],
-    "baseUrl": "./src",
+    "baseUrl": "app",
     "paths": {
-      "@/*": ["./*"],
-      "@/assets/*": ["./assets/*"],
-      "@/components/*": ["./components/*"],
-      "@/routes/*": ["./routes/*"],
-      "@/styles/*": ["./styles/*"],
-      "@/utils/*": ["./utils/*"],
-      "@/features/*": ["./features/*"]
+      "@/*": ["./*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "./.react-router/types"],
