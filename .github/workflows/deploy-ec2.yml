@@ -77,15 +77,15 @@ jobs:
             fi
           done
 
-          echo "Check Nginx on :80 ..."
-          for i in {1..10}; do
-            if curl -fsS http://127.0.0.1/ >/dev/null; then
-              echo "OK: Nginx is serving Movii on :80"
+          echo "Check Nginx HTTPS ..."
+          for i in {1..15}; do
+            if curl -fsS --resolve movii.shop:443:127.0.0.1 https://www.movii.shop/ >/dev/null; then
+              echo "OK: Nginx is serving Movii on HTTPS"
               exit 0
             fi
-            echo "nginx not ready yet ($i/10) ..."; sleep 1
+            echo "https not ready yet ($i/15) ..."; sleep 1
           done
 
-          echo "FAIL: Nginx still not serving on :80"
+          echo "FAIL: Nginx still not serving on HTTPS"
           sudo tail -n 120 /var/log/nginx/error.log || true
           exit 1
