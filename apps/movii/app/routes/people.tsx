@@ -1,10 +1,13 @@
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router';
+import { Link, LoaderFunctionArgs, useLoaderData, useParams, useSearchParams } from 'react-router';
 
 import AsyncBoundary from '@/components/async-boundary';
 import PosterCard from '@/components/poster-card';
 import { TMDB_API_POSTER_BASE_URL } from '@/constants';
-import useMovieCreditsQuery from '@/features/people/hooks/queries/use-movie-credits-query';
+import useMovieCreditsQuery, {
+  movieCreditsQueryOptions,
+} from '@/features/people/hooks/queries/use-movie-credits-query';
 import { MovieCreditsResponse } from '@/features/people/types';
 
 const extractCreditData = (data: MovieCreditsResponse, type: 'cast' | 'crew') =>
@@ -22,6 +25,18 @@ const getMovies = (data: MovieCreditsResponse) => {
 
   return movieData;
 };
+
+export async function loader({ params }: LoaderFunctionArgs) {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(
+    movieCreditsQueryOptions({ personId: Number(params.id), language: 'ko' }),
+  );
+
+  return {
+    dehydratedState: dehydrate(queryClient),
+  };
+}
 
 const CreditsContent = ({ personId }: { personId: number }) => {
   const { data } = useMovieCreditsQuery({ personId, language: 'ko' });
@@ -48,13 +63,14 @@ const CreditsContent = ({ personId }: { personId: number }) => {
 const People = () => {
   const params = useParams();
   const [searchParams] = useSearchParams();
+  const { dehydratedState } = useLoaderData<typeof loader>();
 
   if (!params.id) {
     return null;
   }
 
   return (
-    <>
+    <HydrationBoundary state={dehydratedState}>
       <section className="px-(--page-side-margin) pt-[54px]">
         <h1 className="text-white font-bold text-[28px]">{searchParams.get('name')}</h1>
       </section>
@@ -63,7 +79,7 @@ const People = () => {
           <CreditsContent personId={Number(params.id)} />
         </AsyncBoundary>
       </section>
-    </>
+    </HydrationBoundary>
   );
 };
 

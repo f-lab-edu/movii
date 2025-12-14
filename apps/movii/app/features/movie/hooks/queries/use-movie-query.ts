@@ -1,4 +1,4 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 
 import { movieQueryKeys } from '@/features/movie/hooks/queries/query-keys';
 import { MovieDetailRequestParams, MovieDetailResponse } from '@/features/movie/types';
@@ -40,14 +40,17 @@ const transformCreditsData = (data: MovieDetailResponse) => {
   };
 };
 
-const useMovieQuery = ({ id, language, appendToResponse }: MovieDetailRequestParams) => {
-  return useSuspenseQuery({
+export const movieQueryOptions = ({ id, language, appendToResponse }: MovieDetailRequestParams) =>
+  queryOptions({
     queryKey: movieQueryKeys.detail({ id, language, appendToResponse }),
     queryFn: () => fetchMovie({ id, language, appendToResponse }),
     select: transformCreditsData,
     staleTime: Infinity,
     gcTime: Infinity,
   });
+
+const useMovieQuery = ({ id, language, appendToResponse }: MovieDetailRequestParams) => {
+  return useSuspenseQuery(movieQueryOptions({ id, language, appendToResponse }));
 };
 
 export default useMovieQuery;

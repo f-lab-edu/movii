@@ -5,14 +5,15 @@ import PlusIcon from '@movii/icons/plus';
 import StarIcon from '@movii/icons/star';
 import StarOutlinedIcon from '@movii/icons/star-outlined';
 import TvIcon from '@movii/icons/tv';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { memo, ReactNode } from 'react';
-import { Link, useParams } from 'react-router';
+import { Link, LoaderFunctionArgs, useLoaderData, useParams } from 'react-router';
 
 import AsyncBoundary from '@/components/async-boundary';
 import Button from '@/components/button';
 import Profile from '@/components/profile';
 import { FALLBACK_AVATAR_IMAGE_URL, TMDB_API_POSTER_BASE_URL } from '@/constants';
-import useMovieQuery from '@/features/movie/hooks/queries/use-movie-query';
+import useMovieQuery, { movieQueryOptions } from '@/features/movie/hooks/queries/use-movie-query';
 
 const MAX_CREDITS_DISPLAY_COUNT = 9;
 
@@ -40,7 +41,19 @@ const StatItem = memo(
 );
 StatItem.displayName = 'StatItem';
 
-const MovieInfo = ({ id }: { id: number }) => {
+export async function loader({ params }: LoaderFunctionArgs) {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(
+    movieQueryOptions({ id: Number(params.id), language: 'ko', appendToResponse: 'credits' }),
+  );
+
+  return {
+    dehydratedState: dehydrate(queryClient),
+  };
+}
+
+const ContentsInfo = ({ id }: { id: number }) => {
   const { data } = useMovieQuery({
     id,
     language: 'ko',
@@ -205,20 +218,23 @@ const MovieInfo = ({ id }: { id: number }) => {
   );
 };
 
-const MovieDetail = () => {
+const ContentsDetail = () => {
   const { id } = useParams();
+  const { dehydratedState } = useLoaderData<typeof loader>();
 
   if (!id) {
     return null;
   }
 
   return (
-    <div className="max-w-[1680px] mx-auto">
-      <AsyncBoundary fallback={<div className="text-white">Error</div>}>
-        <MovieInfo id={Number(id)} />
-      </AsyncBoundary>
-    </div>
+    <HydrationBoundary state={dehydratedState}>
+      <div className="max-w-[1680px] mx-auto">
+        <AsyncBoundary fallback={<div className="text-white">Error</div>}>
+          <ContentsInfo id={Number(id)} />
+        </AsyncBoundary>
+      </div>
+    </HydrationBoundary>
   );
 };
 
-export default MovieDetail;
+export default ContentsDetail;
