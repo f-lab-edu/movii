@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router';
 
 import AsyncBoundary from '@/components/async-boundary';
 import PosterCard from '@/components/poster-card';
-import { TMDB_API_POSTER_BASE_URL } from '@/constants';
 import { useSearchInfiniteQuery } from '@/features/search/hooks/queries/use-search-infinite-query';
 import { SearchResultMap } from '@/features/search/types';
 import ResultEmpty from '@/routes/search/components/search-results/result-empty';
@@ -55,8 +54,11 @@ const Contents = ({ query }: PosterSearchResultsProps) => {
               <Link to={to}>
                 <PosterCard
                   title={title}
-                  imageUrl={`${TMDB_API_POSTER_BASE_URL}/${result.posterPath}`}
+                  kind={result.posterPath ? 'poster' : 'backdrop'}
+                  imagePath={result.posterPath || result.backdropPath || ''}
                   className="aspect-2/3 hover:brightness-80"
+                  width={190}
+                  height={285}
                 />
               </Link>
             </li>

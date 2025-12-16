@@ -6,7 +6,7 @@ import posterFallbackImage from '@/assets/images/poster-fallback.svg';
 import AsyncBoundary from '@/components/async-boundary';
 import PosterCard from '@/components/poster-card';
 import Profile from '@/components/profile';
-import { FALLBACK_AVATAR_IMAGE_URL, TMDB_API_POSTER_BASE_URL } from '@/constants';
+import { FALLBACK_AVATAR_IMAGE_URL } from '@/constants';
 import { useMultiSearchInfiniteQuery } from '@/features/search/hooks/queries/use-multi-search-infinite-query';
 import ResultEmpty from '@/routes/search/components/search-results/result-empty';
 import ResultError from '@/routes/search/components/search-results/result-error';
@@ -20,13 +20,23 @@ type SearchListItemProps = {
 };
 
 const SearchListItem = ({ title, date, posterPath, category }: SearchListItemProps) => {
+  console.log('posterPath', posterPath);
   return (
     <li className="flex items-center gap-3.5 py-2">
-      <PosterCard
-        imageUrl={posterPath ? `${TMDB_API_POSTER_BASE_URL}/${posterPath}` : posterFallbackImage}
-        title={title}
-        className="size-12"
-      />
+      {posterPath ? (
+        <PosterCard
+          imagePath={posterPath}
+          title={title}
+          width={48}
+          height={48}
+          className="size-12"
+        />
+      ) : (
+        <img
+          className="object-cover bg-(--color-background30) size-12 overflow-hidden cursor-pointer rounded"
+          src={posterFallbackImage}
+        />
+      )}
       <div className="flex flex-col">
         <div className="text-white">{title}</div>
         <div className="flex text-(--color-tertiary-text) text-[13px] gap-1">
@@ -94,13 +104,11 @@ const Contents = () => {
             <Link key={peopleId} to={`/people/${peopleId}?name=${result.name}`}>
               <Profile className="py-2">
                 <Profile.Image
-                  src={
-                    result.profilePath
-                      ? `${TMDB_API_POSTER_BASE_URL}/${result.profilePath}`
-                      : FALLBACK_AVATAR_IMAGE_URL
-                  }
+                  path={result.profilePath ?? FALLBACK_AVATAR_IMAGE_URL}
                   alt={`${result.name}의 프로필 사진`}
                   className="size-[42px]"
+                  width={42}
+                  height={42}
                 />
                 <div>
                   <Profile.Name>{result.name}</Profile.Name>

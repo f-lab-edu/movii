@@ -1,8 +1,9 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = '../dist/server/index.js';

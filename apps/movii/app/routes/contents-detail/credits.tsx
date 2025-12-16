@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router';
 
 import AsyncBoundary from '@/components/async-boundary';
 import Profile from '@/components/profile';
-import { FALLBACK_AVATAR_IMAGE_URL, TMDB_API_POSTER_BASE_URL } from '@/constants';
+import { FALLBACK_AVATAR_IMAGE_URL } from '@/constants';
 import useMovieQuery from '@/features/movie/hooks/queries/use-movie-query';
 
 const CreditsContent = ({ id }: { id: number }) => {
@@ -21,12 +21,10 @@ const CreditsContent = ({ id }: { id: number }) => {
           <Link to={`/people/${cast.id}?name=${cast.name}`}>
             <Profile>
               <Profile.Image
-                src={
-                  cast.profilePath
-                    ? `${TMDB_API_POSTER_BASE_URL}/${cast.profilePath}`
-                    : FALLBACK_AVATAR_IMAGE_URL
-                }
+                path={cast.profilePath ?? FALLBACK_AVATAR_IMAGE_URL}
                 alt={`${cast.name}의 프로필 사진`}
+                width={62}
+                height={62}
               />
               <div>
                 <Profile.Name>{cast.name}</Profile.Name>

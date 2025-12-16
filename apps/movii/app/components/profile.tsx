@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react';
 
+import TmdbImage from '@/components/tmdb-image';
 import { cn } from '@/utils/cn';
 
 const Profile = ({ children, className, ...props }: ComponentProps<'div'>) => {
@@ -11,19 +12,21 @@ const Profile = ({ children, className, ...props }: ComponentProps<'div'>) => {
 };
 
 const ProfileImage = ({
-  src,
+  path,
   alt,
+  width,
+  height,
   className,
   ...props
-}: ComponentProps<'img'> & {
-  src: string;
-  alt: string;
-}) => {
+}: Omit<ComponentProps<typeof TmdbImage>, 'kind'>) => {
   return (
-    <img
+    <TmdbImage
       {...props}
-      src={src}
+      kind="profile"
+      path={path}
       alt={alt}
+      width={width}
+      height={height}
       className={cn('size-[62px] rounded-full object-cover bg-(--color-background30)', className)}
     />
   );

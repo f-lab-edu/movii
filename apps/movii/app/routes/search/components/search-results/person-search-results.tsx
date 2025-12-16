@@ -4,7 +4,7 @@ import { Link, useSearchParams } from 'react-router';
 
 import AsyncBoundary from '@/components/async-boundary';
 import Profile from '@/components/profile';
-import { FALLBACK_AVATAR_IMAGE_URL, TMDB_API_POSTER_BASE_URL } from '@/constants';
+import { FALLBACK_AVATAR_IMAGE_URL } from '@/constants';
 import { useSearchInfiniteQuery } from '@/features/search/hooks/queries/use-search-infinite-query';
 import ResultEmpty from '@/routes/search/components/search-results/result-empty';
 import ResultError from '@/routes/search/components/search-results/result-error';
@@ -55,13 +55,11 @@ const Contents = () => {
             <Link to={`/people/${result.id}?name=${result.name}`}>
               <Profile className="flex-col gap-[3px]">
                 <Profile.Image
-                  src={
-                    result.profilePath
-                      ? `${TMDB_API_POSTER_BASE_URL}/${result.profilePath}`
-                      : FALLBACK_AVATAR_IMAGE_URL
-                  }
+                  path={result.profilePath ?? FALLBACK_AVATAR_IMAGE_URL}
                   alt={`${result.name}의 프로필 사진`}
                   className="shrink-0 size-full aspect-square"
+                  width={136}
+                  height={136}
                 />
                 <div className="text-center">
                   <Profile.Name className="text-white text-[15px] font-medium">

@@ -12,6 +12,7 @@ import { Link, LoaderFunctionArgs, useLoaderData, useParams } from 'react-router
 import AsyncBoundary from '@/components/async-boundary';
 import Button from '@/components/button';
 import Profile from '@/components/profile';
+import TmdbImage from '@/components/tmdb-image';
 import { FALLBACK_AVATAR_IMAGE_URL, TMDB_API_POSTER_BASE_URL } from '@/constants';
 import useMovieQuery, { movieQueryOptions } from '@/features/movie/hooks/queries/use-movie-query';
 
@@ -156,10 +157,14 @@ const ContentsInfo = ({ id }: { id: number }) => {
             </section>
           </section>
           <section className="self-end max-w-[968px] max-h-full">
-            <img
-              src={`${TMDB_API_POSTER_BASE_URL}/${data.backdropPath}`}
+            <TmdbImage
+              kind="backdrop"
+              path={data.backdropPath}
               alt={`${data.title} poster`}
-              className="rounded-xl size-full object-cover"
+              width={968}
+              height={545}
+              className="rounded-xl object-cover"
+              priority
             />
           </section>
           {/* 하단부 그라데이션 */}
@@ -197,12 +202,10 @@ const ContentsInfo = ({ id }: { id: number }) => {
               <Link to={`/people/${cast.id}?name=${cast.name}`}>
                 <Profile>
                   <Profile.Image
-                    src={
-                      cast.profilePath
-                        ? `${TMDB_API_POSTER_BASE_URL}/${cast.profilePath}`
-                        : FALLBACK_AVATAR_IMAGE_URL
-                    }
+                    path={cast.profilePath ?? FALLBACK_AVATAR_IMAGE_URL}
                     alt={`${cast.name}의 프로필 사진`}
+                    width={62}
+                    height={62}
                   />
                   <div>
                     <Profile.Name>{cast.name}</Profile.Name>

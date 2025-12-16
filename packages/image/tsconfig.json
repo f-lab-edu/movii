@@ -1,8 +1,0 @@
-{
-  "extends": "@movii/typescript-config",
-  "compilerOptions": {
-    "composite": true
-  },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules"]
-}

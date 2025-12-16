@@ -3,7 +3,6 @@ import { memo } from 'react';
 import { Link } from 'react-router';
 
 import PosterCard from '@/components/poster-card';
-import { TMDB_API_POSTER_BASE_URL } from '@/constants';
 import { useMoviesInfiniteQuery } from '@/features/movie/hooks/queries/use-movies-infinite-query';
 import { MovieFetchType } from '@/features/movie/types';
 
@@ -34,8 +33,10 @@ const PosterCarousel = ({ type, carouselTitle }: PosterCarouselProps) => {
             <Link key={movie.id} to={`/contents/${movie.id}`}>
               <PosterCard
                 title={movie.title}
-                imageUrl={`${TMDB_API_POSTER_BASE_URL}${movie.posterPath}`}
+                imagePath={movie.posterPath}
                 className="aspect-2/3 hover:brightness-80"
+                width={190}
+                height={285}
               />
             </Link>
           ))}

@@ -3,7 +3,7 @@ import { FallbackProps } from 'react-error-boundary';
 import { Link } from 'react-router';
 
 import AsyncBoundary from '@/components/async-boundary';
-import { TMDB_API_POSTER_BASE_URL } from '@/constants';
+import TmdbImage from '@/components/tmdb-image';
 import { useTrendingQuery } from '@/features/trending/hooks/queries/use-trending-query';
 import { TrendingMediaType, TrendingMediaTypeMap, TrendingResult } from '@/features/trending/types';
 import { cn } from '@/utils/cn';
@@ -182,14 +182,12 @@ const PopularSearchKeywords = ({ mediaType }: { mediaType: TrendingMediaType }) 
         </div>
       </div>
       <div className="absolute right-0 top-0 h-[103%] -z-10">
-        <img
-          src={
-            results[highlightedIndex]?.imagePath
-              ? `${TMDB_API_POSTER_BASE_URL}/${results[highlightedIndex]?.imagePath}`
-              : ''
-          }
-          alt={results[highlightedIndex]?.title}
-          loading="lazy"
+        <TmdbImage
+          kind={results[highlightedIndex]?.mediaType === 'person' ? 'profile' : 'backdrop'}
+          path={results[highlightedIndex]?.imagePath ?? ''}
+          alt={results[highlightedIndex]?.title ?? ''}
+          width={660}
+          height={370}
           className="size-full object-cover"
         />
         <div className="absolute top-0 h-[20%] w-full bg-linear-to-b from-black to-transparent" />

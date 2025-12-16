@@ -2,7 +2,7 @@ import { Carousel, useCarouselState } from 'movii-carousel';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 
-import { TMDB_API_POSTER_BASE_URL } from '@/constants';
+import TmdbImage from '@/components/tmdb-image';
 import { useMoviesInfiniteQuery } from '@/features/movie/hooks/queries/use-movies-infinite-query';
 import { cn } from '@/utils/cn';
 
@@ -33,15 +33,19 @@ const MovieSlide = ({
     setShouldAnimate(false);
   }, [isActive]);
 
-  const imagePath = movie.backdropPath || movie.posterPath;
+  const imagePath = movie.backdropPath || movie.posterPath || '';
 
   return (
     <div key={movie.id} className="relative w-full h-full">
       <Link to={`/contents/${movie.id}`}>
-        <img
-          src={`${TMDB_API_POSTER_BASE_URL}${imagePath}`}
+        <TmdbImage
+          kind="poster"
+          path={imagePath}
           alt={`${movie.title} poster`}
           className="w-full h-full object-cover"
+          width={1680}
+          height={945}
+          priority
         />
         <div
           className={cn(

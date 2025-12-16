@@ -22,7 +22,6 @@ packages/
   carousel/      : 커스텀 React 캐러셀 컴포넌트
   eslint-config/ : 프로젝트용 ESLint 설정 패키지
   icons/         : SVG/React 기반 아이콘 컴포넌트 모음
-  image/         :
   prettier-config/: 프로젝트용 Prettier 설정 패키지
   typescript-config/: TypeScript 공통 설정 패키지
 ```
@@ -58,11 +57,6 @@ packages/
   ```tsx
   <StarIcon className="fill-white size-6 mr-1" />
   ```
-
-### packages/image (WIP)
-
-- Next.js `next/image`와 유사한 사용성을 목표로 하는 이미지 최적화 패키지입니다.
-- 아직 미완성 상태입니다.
 
 ### packages/prettier-config
 

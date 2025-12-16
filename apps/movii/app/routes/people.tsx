@@ -4,7 +4,6 @@ import { Link, LoaderFunctionArgs, useLoaderData, useParams, useSearchParams } f
 
 import AsyncBoundary from '@/components/async-boundary';
 import PosterCard from '@/components/poster-card';
-import { TMDB_API_POSTER_BASE_URL } from '@/constants';
 import useMovieCreditsQuery, {
   movieCreditsQueryOptions,
 } from '@/features/people/hooks/queries/use-movie-credits-query';
@@ -50,8 +49,10 @@ const CreditsContent = ({ personId }: { personId: number }) => {
           <Link key={id} to={`/contents/${id}`}>
             <PosterCard
               title={title}
-              imageUrl={`${TMDB_API_POSTER_BASE_URL}/${posterPath}`}
+              imagePath={posterPath}
               className="aspect-2/3 hover:brightness-80"
+              width={190}
+              height={285}
             />
           </Link>
         </li>
@@ -71,14 +72,16 @@ const People = () => {
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <section className="px-(--page-side-margin) pt-[54px]">
-        <h1 className="text-white font-bold text-[28px]">{searchParams.get('name')}</h1>
-      </section>
-      <section className="px-(--page-side-margin) mt-8">
-        <AsyncBoundary fallback={<div className="text-white">Error</div>}>
-          <CreditsContent personId={Number(params.id)} />
-        </AsyncBoundary>
-      </section>
+      <main className="max-w-[1680px] mx-auto">
+        <section className="px-(--page-side-margin) pt-[54px]">
+          <h1 className="text-white font-bold text-[28px]">{searchParams.get('name')}</h1>
+        </section>
+        <section className="px-(--page-side-margin) mt-8">
+          <AsyncBoundary fallback={<div className="text-white">Error</div>}>
+            <CreditsContent personId={Number(params.id)} />
+          </AsyncBoundary>
+        </section>
+      </main>
     </HydrationBoundary>
   );
 };
