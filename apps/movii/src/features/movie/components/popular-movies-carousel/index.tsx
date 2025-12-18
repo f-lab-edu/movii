@@ -1,6 +1,6 @@
 import { Carousel, useCarouselState } from 'movii-carousel';
 import Link from 'next/link';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useMemo } from 'react';
 
 import TmdbImage from '@/components/tmdb-image';
 import { useMoviesInfiniteQuery } from '@/features/movie/hooks/queries/use-movies-infinite-query';
@@ -20,18 +20,7 @@ const MovieSlide = ({
   index: number;
 }) => {
   const { activeSlideIndex } = useCarouselState();
-  const [shouldAnimate, setShouldAnimate] = useState(false);
   const isActive = activeSlideIndex === index;
-
-  useEffect(() => {
-    if (isActive) {
-      const animationId = requestAnimationFrame(() => {
-        setShouldAnimate(true);
-      });
-      return () => cancelAnimationFrame(animationId);
-    }
-    setShouldAnimate(false);
-  }, [isActive]);
 
   const imagePath = movie.backdropPath || movie.posterPath || '';
 
@@ -49,9 +38,8 @@ const MovieSlide = ({
         />
         <div
           className={cn(
-            'absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-6',
-            isActive ? 'transition-all duration-700 ease-out' : 'transition-none',
-            shouldAnimate && isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full',
+            'absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-6 transition-all duration-700 ease-out',
+            isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full',
           )}
         >
           <h3 className="text-white text-5xl font-bold mb-4">{movie.title}</h3>

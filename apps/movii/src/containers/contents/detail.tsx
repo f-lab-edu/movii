@@ -5,6 +5,7 @@ import PlusIcon from '@movii/icons/plus';
 import StarIcon from '@movii/icons/star';
 import StarOutlinedIcon from '@movii/icons/star-outlined';
 import TvIcon from '@movii/icons/tv';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { memo, ReactNode } from 'react';
@@ -164,10 +165,11 @@ const ContentsInfo = ({ id }: { id: number }) => {
       </div>
       <section className="my-8 pl-(--page-side-margin)">
         <div className="flex items-start gap-1.5">
-          <img
+          <Image
             src="https://an2-mars.amz.wtchn.net/assets/icon/message-b82841d4d764ea370bd5588d0c16bc52ab2138de010b7267c64fb307f8d68c71.png"
             alt="message"
-            className="size-5"
+            width={20}
+            height={20}
           />
           <div className="text-white">
             <p>구독하면 바로 감상할 수 있어요.</p>

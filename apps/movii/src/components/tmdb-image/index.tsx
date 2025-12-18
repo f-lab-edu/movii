@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { TMDB_BASE, TMDB_IMAGE_SIZES } from '@/components/tmdb-image/constants';
@@ -85,7 +86,7 @@ const TmdbImage = ({
   const src = isAbsoluteUrl(normalized) ? normalized : `${TMDB_BASE}${token}${normalized}`;
 
   return (
-    <img
+    <Image
       ref={imgRef}
       src={src}
       alt={alt}

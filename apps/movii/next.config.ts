@@ -29,6 +29,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'an2-mars.amz.wtchn.net',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

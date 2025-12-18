@@ -61,9 +61,7 @@ const SearchBarInput = () => {
 
   const inputFocusRef = useRef<HTMLInputElement>(null);
 
-  const { ref: registerRef, ...queryRegister } = register('query', {
-    onChange: handleInputChange,
-  });
+  const { ref: registerRef, ...queryRegister } = register('query');
 
   const combinedInputRef = (node: HTMLInputElement | null) => {
     registerRef(node);
@@ -88,6 +86,7 @@ const SearchBarInput = () => {
         <input
           {...queryRegister}
           ref={combinedInputRef}
+          onChange={handleInputChange}
           className="text-(--color-primary-text) placeholder:text-(--color-gray50) text-[15px] w-full outline-none bg-transparent caret-(--color-primary10) "
           placeholder="콘텐츠, 태그, 인물, 리스트 검색"
           type="search"

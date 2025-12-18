@@ -6,11 +6,11 @@ import {
 } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import type { AppProps } from 'next/app';
-
 import TanstackQueryDevtools from '@/add-ons/tanstack-query-devtools';
 import Layout from '@/components/layout';
 import '@/styles/global.css';
+
+import type { AppProps } from 'next/app';
 
 type Props = AppProps<{
   dehydratedState?: DehydratedState;

@@ -1,4 +1,5 @@
 import { Carousel } from 'movii-carousel';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ComponentProps } from 'react';
 import { FallbackProps } from 'react-error-boundary';
@@ -32,12 +33,14 @@ const GenreCarousel = ({ genre }: { genre: Genres }) => {
               <div className="absolute top-2 left-2 px-2 py-1 rounded text-white font-bold drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] z-20">
                 {name}
               </div>
-              <img
+              <Image
                 // API Response에 이미지가 없어서 랜덤 이미지 활용
                 src={`https://picsum.photos/seed/${id}/400/300`}
                 alt={name}
                 loading="lazy"
-                className="size-full rounded bg-(--color-background70) object-cover"
+                className="rounded bg-(--color-background70) object-cover"
+                width={400}
+                height={300}
               />
             </Link>
           ))}

@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { ComponentProps, memo, useEffect, useRef, useState } from 'react';
 import { FallbackProps } from 'react-error-boundary';
@@ -8,6 +9,23 @@ import { useTrendingQuery } from '@/features/trending/hooks/queries/use-trending
 import { TrendingMediaType, TrendingMediaTypeMap, TrendingResult } from '@/features/trending/types';
 import { cn } from '@/utils/cn';
 import { typedEntries } from '@/utils/object';
+
+const DateStandard = () => {
+  return (
+    <div className="mt-[26px] text-(--color-disabled-text) text-[11px]">
+      {/* 2025. 10. 16. 형태에서 모든 공백 제거 & 끝에 오는 마침표(.) 제거 -> 2025.10.16 */}
+      {new Date().toLocaleDateString().replace(/\s+/g, '').replace(/\.$/, '')} 00:00 기준
+    </div>
+  );
+};
+
+// Hydration Warning 방지용 클라이언트 전용 컴포넌트
+const ClientOnlyDate = dynamic(() => Promise.resolve(DateStandard), {
+  loading: () => (
+    <div className="mt-[26px] h-3.5 w-28 bg-(--color-background30) rounded animate-pulse" />
+  ),
+  ssr: false,
+});
 
 const TabButton = ({
   children,
@@ -86,10 +104,9 @@ const getTransformedKeywordsData = (data: Paging<TrendingResult>) => {
   );
 };
 
-const useHighlightedIndex = (mediaType: TrendingMediaType, dataLength: number) => {
+const useHighlightedIndex = (dataLength: number) => {
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // 자동 highlight
@@ -107,24 +124,19 @@ const useHighlightedIndex = (mediaType: TrendingMediaType, dataLength: number) =
     };
   }, [dataLength, isPaused]);
 
-  // hover 시 highlight 멈춤 및 인덱스 고정
-  useEffect(() => {
-    if (hoveredIndex !== null) {
-      setIsPaused(true);
-      setHighlightedIndex(hoveredIndex);
-    } else {
-      setIsPaused(false);
-    }
-  }, [hoveredIndex]);
+  const handleMouseEnter = (idx: number) => {
+    setIsPaused(true);
+    setHighlightedIndex(idx);
+  };
 
-  // mediaType 변경 시 highlight 인덱스 초기화
-  useEffect(() => {
-    setHighlightedIndex(0);
-  }, [mediaType]);
+  const handleMouseLeave = () => {
+    setIsPaused(false);
+  };
 
   return {
     highlightedIndex,
-    setHoveredIndex,
+    handleMouseEnter,
+    handleMouseLeave,
   };
 };
 
@@ -132,7 +144,9 @@ const PopularSearchKeywords = ({ mediaType }: { mediaType: TrendingMediaType }) 
   const { data } = useTrendingQuery({ mediaType, timeWindow: 'day', language: 'ko' });
 
   const results = getTransformedKeywordsData(data);
-  const { highlightedIndex, setHoveredIndex } = useHighlightedIndex(mediaType, results.length);
+  const { highlightedIndex, handleMouseEnter, handleMouseLeave } = useHighlightedIndex(
+    results.length,
+  );
 
   if (!results.length) {
     return <div className="text-(--color-background100)">데이터가 없습니다.</div>;
@@ -163,8 +177,8 @@ const PopularSearchKeywords = ({ mediaType }: { mediaType: TrendingMediaType }) 
                     alert('준비중입니다.');
                   }
                 }}
-                onMouseEnter={() => setHoveredIndex(idx)}
-                onMouseLeave={() => setHoveredIndex(null)}
+                onMouseEnter={() => handleMouseEnter(idx)}
+                onMouseLeave={handleMouseLeave}
                 className={cn(
                   'text-lg text-(--color-tertiary-text) transition-all motion-reduce:transition-none',
                   idx === highlightedIndex && 'font-bold text-xl text-white',
@@ -176,10 +190,7 @@ const PopularSearchKeywords = ({ mediaType }: { mediaType: TrendingMediaType }) 
             </li>
           ))}
         </ul>
-        <div className="mt-[26px] text-(--color-disabled-text) text-[11px]">
-          {/* 2025. 10. 16. 형태에서 모든 공백 제거 & 끝에 오는 마침표(.) 제거 -> 2025.10.16 */}
-          {new Date().toLocaleDateString().replace(/\s+/g, '').replace(/\.$/, '')} 00:00 기준
-        </div>
+        <ClientOnlyDate />
       </div>
       <div className="absolute right-0 top-0 h-[103%] -z-10">
         <TmdbImage
@@ -240,7 +251,7 @@ const PopularSearchKeywordsSection = () => {
           pendingFallback={<PopularSearchKeywordsLoading />}
           FallbackComponent={PopularSearchKeywordsError}
         >
-          <PopularSearchKeywords mediaType={mediaType} />
+          <PopularSearchKeywords key={mediaType} mediaType={mediaType} />
         </AsyncBoundary>
       </div>
     </>

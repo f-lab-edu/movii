@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
@@ -32,9 +33,12 @@ const SearchListItem = ({ title, date, posterPath, category }: SearchListItemPro
           className="size-12"
         />
       ) : (
-        <img
-          className="object-cover bg-(--color-background30) size-12 overflow-hidden cursor-pointer rounded"
+        <Image
+          className="object-cover bg-(--color-background30)  overflow-hidden cursor-pointer rounded"
           src={posterFallbackImage.src}
+          width={48}
+          height={48}
+          alt="이미지 없음"
         />
       )}
       <div className="flex flex-col">
