@@ -7,7 +7,7 @@
     },
     "@movii/web#build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**"],
+      "outputs": [".next/**", "out/**"],
       "env": ["NEXT_PUBLIC_TMDB_API_ACCESS_TOKEN"]
     },
     "lint": { "outputs": [] },

@@ -51,6 +51,14 @@ jobs:
         env:
           NEXT_PUBLIC_TMDB_API_ACCESS_TOKEN: ${{ secrets.TMDB_API_ACCESS_TOKEN }}
 
+      - name: Verify static export output
+        run: |
+          if [[ ! -d "${{ env.DIST_PATH }}" ]]; then
+            echo "❌ Missing export output directory: ${{ env.DIST_PATH }}"
+            echo "Hint: ensure Turbo caches/restores 'out/**' for @movii/web#build (static export)"
+            exit 1
+          fi
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
