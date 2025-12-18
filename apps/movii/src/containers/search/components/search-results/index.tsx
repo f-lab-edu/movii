@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import Button from '@/components/button';
+import Meta from '@/components/meta';
 import PersonSearchResults from '@/containers/search/components/search-results/person-search-results';
 import PopularSearchResults from '@/containers/search/components/search-results/popular-search-results';
 import PosterSearchResults from '@/containers/search/components/search-results/poster-search-results';
@@ -92,6 +93,7 @@ const SearchResults = () => {
 
   return (
     <>
+      <Meta />
       <Tabs />
       {SEARCH_RESULTS[domain] || <InvalidAccess />}
     </>

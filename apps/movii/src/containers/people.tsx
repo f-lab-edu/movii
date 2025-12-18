@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
 import AsyncBoundary from '@/components/async-boundary';
+import Meta from '@/components/meta';
 import PosterCard from '@/components/poster-card';
 import useMovieCreditsQuery from '@/features/people/hooks/queries/use-movie-credits-query';
 import { MovieCreditsResponse } from '@/features/people/types';
@@ -24,26 +25,30 @@ const getMovies = (data: MovieCreditsResponse) => {
 };
 
 const CreditsContent = ({ personId }: { personId: number }) => {
+  const router = useRouter();
   const { data } = useMovieCreditsQuery({ personId, language: 'ko' });
 
   const movieData = useMemo(() => getMovies(data), [data]);
 
   return (
-    <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-      {movieData.map(({ id, title, posterPath }) => (
-        <li key={id}>
-          <Link key={id} href={`/contents/${id}`}>
-            <PosterCard
-              title={title}
-              imagePath={posterPath}
-              className="aspect-2/3 hover:brightness-80"
-              width={190}
-              height={285}
-            />
-          </Link>
-        </li>
-      ))}
-    </ul>
+    <>
+      <Meta title={`${router.query.name}의 출연작`} />
+      <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+        {movieData.map(({ id, title, posterPath }) => (
+          <li key={id}>
+            <Link key={id} href={`/contents/${id}`}>
+              <PosterCard
+                title={title}
+                imagePath={posterPath}
+                className="aspect-2/3 hover:brightness-80"
+                width={190}
+                height={285}
+              />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
 
