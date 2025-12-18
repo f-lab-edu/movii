@@ -3,7 +3,6 @@
 이 프로젝트는 영화 추천 사이트 Movii 서비스의 모노레포입니다.
 
 > ⚠️ 이 프로젝트는 아직 진행 중이며, 문서와 구조는 추후 업데이트될 수 있습니다. <br />
-> Next.js로의 마이그레이션이 예정되어 있습니다. <br />
 > CI/CD, 캐싱, 빌드 자동화, 최적화 등은 점진적으로 개선될 예정입니다.
 
 ## 소개
@@ -28,11 +27,12 @@ packages/
 
 ## 각 패키지/프로젝트 소개
 
-### apss/movii
+### apps/movii
 
 - 영화 추천 및 정보 제공 서비스
-- 왓챠 클론코딩 간소화 버전이며, 추후 Next.js 기반으로 마이그레이션 예정
-- 주요 기능: 영화 목록, 상세 정보, 검색, 인물 정보 등
+- 왓챠 클론코딩 간소화 버전
+- Next.js(pages router) 기반
+- 주요 기능: 영화 목록, 상세 정보, 검색, 인물 정보 제공
 
 ### packages/browserslist-config
 
@@ -68,7 +68,7 @@ TypeScript 프로젝트의 공통 설정을 제공하는 패키지. 모노레포
 
 ## 개발 및 배포
 
-- apps/movii: EC2 + PM2 + Nginx
+- apps/movii: ⚠️ S3 + Cloudfront + Lambda@Edge 기반으로 구축 예정
 - packages/carousel
   - npm 배포: local build 후 npm publish
   - storybook 배포: S3 + Cloudfront

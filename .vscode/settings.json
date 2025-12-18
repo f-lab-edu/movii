@@ -56,10 +56,5 @@
     "watcha"
   ],
   "tailwindCSS.classAttributes": [".*[cC]lass.*"],
-  "workbench.iconTheme": "material-icon-theme",
-  "material-icon-theme.files.associations": {
-    "vite.common.mjs": "vite",
-    "vite.dev.mjs": "vite",
-    "vite.prod.mjs": "vite"
-  }
+  "workbench.iconTheme": "material-icon-theme"
 }

@@ -14,7 +14,6 @@ import {
   useState,
 } from 'react';
 
-import './carousel.css';
 import { cn } from './utils';
 
 type CarouselMode = 'auto' | 'manual';
@@ -753,11 +752,11 @@ export const Carousel = {
   ProgressBar: CarouselProgressBar,
 };
 
-export {
+export type {
   CarouselContentProps,
   CarouselPaginationProps,
   CarouselProgressBarProps,
   CarouselRootProps,
-  useCarouselActions,
-  useCarouselState,
 };
+
+export { useCarouselActions, useCarouselState };

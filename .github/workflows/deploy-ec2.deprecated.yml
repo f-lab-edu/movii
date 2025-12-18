@@ -1,0 +1,90 @@
+name: Deploy Movii to EC2 (self-hosted)
+
+on:
+  # 자동 배포 트리거 (s3 + cloudfront + lambda@edge 사용으로 대체될 예정)
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - 'apps/movii/**'
+
+  # 수동 배포 트리거
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Manual deploy reason (optional)'
+        required: false
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify toolchain
+        run: |
+          set -e
+          echo "whoami: $(whoami)"
+          echo "node: $(node -v)"
+          echo "pnpm: $(pnpm -v)"
+          echo "pm2: $(pm2 -v)"
+
+      - name: Deploy from ~/apps/movii
+        env:
+          VITE_TMDB_API_ACCESS_TOKEN: ${{ secrets.TMDB_API_ACCESS_TOKEN }}
+        run: |
+          set -e
+
+          cd ~/apps/movii
+
+          echo "➡️ Sync repo to origin/main"
+          git fetch origin main
+          git reset --hard origin/main
+          git clean -fd
+
+          echo "➡️ Install deps"
+          pnpm install --frozen-lockfile
+
+          echo "➡️ Build"
+          pnpm build
+
+          echo "➡️ Restart (PM2)"
+           cd apps/movii
+          pm2 delete movii >/dev/null 2>&1 || true
+          PORT=3000 NODE_ENV=production pm2 start ./server/index.js --name movii --update-env
+          pm2 save
+          pm2 describe movii || true
+
+      - name: Health check (wait & retry)
+        run: |
+          set -e
+
+          echo "Wait for app on :3000 ..."
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:3000 >/dev/null; then
+              echo "OK: app is ready on :3000"
+              break
+            fi
+            echo "not ready yet ($i/30) ..."; sleep 1
+            if [ "$i" -eq 30 ]; then
+              echo "FAIL: app not ready on :3000"
+              pm2 status || true
+              pm2 logs movii --lines 120 || true
+              exit 1
+            fi
+          done
+
+          echo "Check Nginx HTTPS ..."
+          for i in {1..15}; do
+            if curl -fsS --resolve movii.shop:443:127.0.0.1 https://www.movii.shop/ >/dev/null; then
+              echo "OK: Nginx is serving Movii on HTTPS"
+              exit 0
+            fi
+            echo "https not ready yet ($i/15) ..."; sleep 1
+          done
+
+          echo "FAIL: Nginx still not serving on HTTPS"
+          sudo tail -n 120 /var/log/nginx/error.log || true
+          exit 1

@@ -2,8 +2,7 @@
 
 간소화된 왓챠 클론코딩 프로젝트입니다.
 
-- React Router(v7) framework mode 기반의 SSR(스트리밍) + prerender를 사용하는 웹 앱입니다.
-- 개발/프로덕션 모두 Express 서버([server/index.js](server/index.js))를 통해 실행합니다.
+- Next.js(pages router) 기반의 웹 앱입니다.
 
 ## Requirements
 
@@ -21,11 +20,11 @@ node -v
 
 TMDB API 호출에 아래 값이 필요합니다.
 
-- `VITE_TMDB_API_ACCESS_TOKEN`
+- `NEXT_PUBLIC_TMDB_API_ACCESS_TOKEN`
 
 1. [TMDB](https://developer.themoviedb.org/reference/getting-started)에서 API Key를 발급받습니다.
 2. 이후 `apps/movii/.env.development`, `apps/movii/.env.production` 파일을 생성합니다.
-3. 각 파일 내에 VITE_TMDB_API_ACCESS_TOKEN="<발급받은 API Key>"를 삽입합니다.
+3. 각 파일 내에 NEXT_PUBLIC_TMDB_API_ACCESS_TOKEN="<발급받은 API Key>"를 삽입합니다.
 
 ## Local Development
 
@@ -37,8 +36,6 @@ pnpm web dev
 
 - 기본 포트: `http://localhost:3000`
 
-개발 모드에서는 Vite dev server를 middleware로 붙이고([server/index.js](server/index.js)), 요청을 [server/app.ts](server/app.ts)로 전달해 SSR을 수행합니다.
-
 ## Production Build & Run
 
 모노레포 루트 경로에서 아래 명령어를 입력합니다.
@@ -48,20 +45,16 @@ pnpm web build
 pnpm web start
 ```
 
-프로덕션 서버는 아래 산출물을 사용합니다.
+프로덕션 빌드 산출물은 Next.js 기본 디렉토리인 `.next/`에 생성됩니다.
 
-- `dist/client`: 정적 파일(assets, pre-rendered html 포함)
-- `dist/server`: 서버 번들
+## Deploy (현재 임시 비활성화)
 
-서버 엔트리는 [server/index.js](server/index.js)이며, 내부에서 `dist/server/index.js`를 로드해 SSR 핸들러를 붙입니다.
+**EC2 + PM2 + Nginx** 구조로 배포합니다. 배포 자동화는 GitHub Actions 워크플로우로 수행합니다.
+S3 + Cloudfront + Lambda@Edge 기반으로 대체될 예정입니다.
 
-## Deploy
+### EC2 배포 (Deprecated)
 
-현재 Movii는 **EC2 + PM2 + Nginx** 구조로 배포합니다. 배포 자동화는 GitHub Actions 워크플로우로 수행합니다.
-
-### 1) EC2 배포 (현재 사용)
-
-워크플로우: [.github/workflows/deploy-ec2.yml](../../.github/workflows/deploy-ec2.yml)
+워크플로우: [.github/workflows/deploy-ec2.yml](../../.github/workflows/deploy-ec2.deprecated.yml)
 
 - 트리거
   - `main` 브랜치에 push + 변경 경로가 `apps/movii/**`인 경우 자동 실행
@@ -73,10 +66,10 @@ pnpm web start
   1.  EC2의 `~/apps/movii` 디렉토리로 이동
   2.  `origin/main`으로 강제 동기화 (`git reset --hard`, `git clean -fd`)
   3.  `pnpm install --frozen-lockfile`
-  4.  `pnpm build`
-  5.  PM2 프로세스 재생성
+  4.  `pnpm --filter @movii/web build`
+  5.  PM2 프로세스 재생성 (Next.js `next start` 실행)
       - `pm2 delete movii || true`
-      - `PORT=3000 NODE_ENV=production pm2 start ./server/index.js --name movii --update-env`
+      - `cd apps/movii && PORT=3000 NODE_ENV=production pm2 start pnpm --name movii -- start`
       - `pm2 save`
   6.  헬스 체크
       - `http://127.0.0.1:3000` 응답 확인
@@ -85,25 +78,6 @@ pnpm web start
 
 ### 필요한 GitHub Secrets
 
-EC2 배포 워크플로우는 TMDB 토큰을 GitHub Secrets에서 주입합니다.
-
 - `TMDB_API_ACCESS_TOKEN`
 
-워크플로우 내부에서는 이를 `VITE_TMDB_API_ACCESS_TOKEN` 환경변수로 매핑하여 빌드에 사용합니다.
-
-### 장애 시 확인 포인트
-
-- PM2 상태/로그
-  - `pm2 status`
-  - `pm2 logs movii --lines 200`
-- Nginx 에러 로그
-  - `/var/log/nginx/error.log`
-
----
-
-### 2) S3/CloudFront 배포 (Deprecated)
-
-워크플로우: [.github/workflows/deploy-prod.deprecated.yml](../../.github/workflows/deploy-prod.deprecated.yml)
-
-과거에는 `apps/movii/dist/client` 산출물을 S3에 업로드하고 CloudFront invalidation을 수행했습니다.
-현재는 EC2 배포([deploy-ec2.yml](../../.github/workflows/deploy-ec2.yml))로 대체되어 자동 트리거가 비활성화되어 있습니다.
+워크플로우 내부에서는 이를 `NEXT_PUBLIC_TMDB_API_ACCESS_TOKEN` 환경변수로 매핑하여 빌드에 사용합니다.
