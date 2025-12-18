@@ -1,0 +1,8 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/contents/:id/credits", "destination": "/contents/[id]/credits.html" },
+    { "source": "/contents/:id", "destination": "/contents/[id].html" },
+    { "source": "/people/:id", "destination": "/people/[id].html" }
+  ]
+}

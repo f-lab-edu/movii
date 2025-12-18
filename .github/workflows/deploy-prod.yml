@@ -1,12 +1,12 @@
 name: Deploy Movii to Production
 
 on:
-  # 자동 배포 트리거 (임시 비활성화. lambda@edge 추가될 예정)
-  # push:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - 'apps/movii/**'
+  # 자동 배포 트리거
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/movii/**'
 
   # 수동 배포 트리거
   workflow_dispatch:
@@ -19,7 +19,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      DIST_PATH: apps/movii/dist/client
+      DIST_PATH: apps/movii/out
     defaults:
       run:
         shell: bash
@@ -49,7 +49,7 @@ jobs:
       - name: Build Project
         run: pnpm build
         env:
-          VITE_TMDB_API_ACCESS_TOKEN: ${{ secrets.TMDB_API_ACCESS_TOKEN }}
+          NEXT_PUBLIC_TMDB_API_ACCESS_TOKEN: ${{ secrets.TMDB_API_ACCESS_TOKEN }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2

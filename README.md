@@ -68,7 +68,7 @@ TypeScript 프로젝트의 공통 설정을 제공하는 패키지. 모노레포
 
 ## 개발 및 배포
 
-- apps/movii: ⚠️ S3 + Cloudfront + Lambda@Edge 기반으로 구축 예정
+- apps/movii: S3 + Cloudfront
 - packages/carousel
   - npm 배포: local build 후 npm publish
   - storybook 배포: S3 + Cloudfront

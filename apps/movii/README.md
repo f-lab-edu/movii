@@ -45,36 +45,37 @@ pnpm web build
 pnpm web start
 ```
 
-프로덕션 빌드 산출물은 Next.js 기본 디렉토리인 `.next/`에 생성됩니다.
+프로덕션 빌드 산출물은 `out/`에 생성됩니다.
 
-## Deploy (현재 임시 비활성화)
+### `serve` (static server)
 
-**EC2 + PM2 + Nginx** 구조로 배포합니다. 배포 자동화는 GitHub Actions 워크플로우로 수행합니다.
-S3 + Cloudfront + Lambda@Edge 기반으로 대체될 예정입니다.
+이 프로젝트는 `next.config.ts`에서 `output: 'export'`를 사용합니다.
+즉, `pnpm web start`는 Next 서버를 띄우는 것이 아니라 **정적 export 산출물(`out/`)을 서빙**합니다.
 
-### EC2 배포 (Deprecated)
+- 사용 패키지: `serve`
+- 실행 스크립트: `serve -c ../serve.json out`
 
-워크플로우: [.github/workflows/deploy-ec2.yml](../../.github/workflows/deploy-ec2.deprecated.yml)
+#### 왜 `serve.json`이 필요한가?
 
-- 트리거
-  - `main` 브랜치에 push + 변경 경로가 `apps/movii/**`인 경우 자동 실행
-  - 또는 Actions 탭에서 수동 실행(`workflow_dispatch`)
-- 실행 환경
-  - `runs-on: self-hosted` (EC2에 설치된 self-hosted runner에서 실행)
-  - 서버에 `node`, `pnpm`, `pm2`가 설치되어 있어야 합니다.
-- 주요 동작
-  1.  EC2의 `~/apps/movii` 디렉토리로 이동
-  2.  `origin/main`으로 강제 동기화 (`git reset --hard`, `git clean -fd`)
-  3.  `pnpm install --frozen-lockfile`
-  4.  `pnpm --filter @movii/web build`
-  5.  PM2 프로세스 재생성 (Next.js `next start` 실행)
-      - `pm2 delete movii || true`
-      - `cd apps/movii && PORT=3000 NODE_ENV=production pm2 start pnpm --name movii -- start`
-      - `pm2 save`
-  6.  헬스 체크
-      - `http://127.0.0.1:3000` 응답 확인
-      - Nginx HTTPS 서빙 확인: `https://www.movii.shop/`
-      - 평상시에는 EC2의 인바운드 룰을 My IP만으로 제한해두기 때문에 위 도메인은 접근이 안될 수 있습니다.
+정적 서빙 환경에서는 `/contents/123` 같은 **dynamic route를 새로고침**하면,
+서버 입장에서는 해당 경로의 정적 파일을 찾지 못해 404가 날 수 있습니다.
+
+이를 로컬에서 완화하기 위해 [serve.json](serve.json)에 `rewrites` 규칙을 두고,
+요청 경로(`/contents/:id`)를 export 결과물의 placeholder 경로(`/contents/[id]...`)로 매핑합니다.
+
+#### 포트를 바꾸고 싶다면
+
+`serve`는 옵션이 **경로 인자(out)보다 앞**에 와야 합니다.
+예를 들어 3010 포트로 띄우려면 아래처럼 실행합니다.
+
+```bash
+pnpm -C apps/movii exec serve -l 3010 -c ../serve.json out
+```
+
+## Deploy
+
+S3 + Cloudfront 기반 정적 배포입니다.
+Dynamic routes의 경우 CloudFront Functions에서 uri를 rewrite하여 핸들링합니다.
 
 ### 필요한 GitHub Secrets
 

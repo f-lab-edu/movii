@@ -9,7 +9,7 @@
     "analyze": "ANALYZE=true pnpm build",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "serve -c ../serve.json out",
     "typecheck": "tsc --noEmit",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' '*.mjs'",
     "lint:fix": "eslint 'src/**/*.{js,jsx,ts,tsx}' '*.mjs' --fix",
@@ -54,6 +54,7 @@
     "postcss": "^8.5.6",
     "postcss-preset-env": "^10.4.0",
     "prettier": "catalog:",
+    "serve": "^14.2.5",
     "tailwindcss": "^4.1.13",
     "typescript": "catalog:"
   }

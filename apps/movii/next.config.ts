@@ -10,12 +10,14 @@ const withBundleAnalyzer = bundleAnalyzer({
 });
 
 const nextConfig: NextConfig = {
+  output: 'export',
   reactStrictMode: true,
   experimental: {
     scrollRestoration: true,
     externalDir: true, // monorepo 내 패키지 참조 허용
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
